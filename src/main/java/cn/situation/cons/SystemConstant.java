@@ -55,6 +55,9 @@ public class SystemConstant {
 
     public static final String KAFKA_KERBEROS_PATH = getProperty("kafka_kerberos_path", "/home/krb");
 
+    public static final String ZMQ_SNDHWM = getProperty("zmq_sndhwm", "100");
+    public static final String ZMQ_RCVHWM = getProperty("zmq_rcvhwm", "100");
 
+    public static final String WORKER_THREAD_NUM = getProperty("worker_thread_num", "10");
 
 }
