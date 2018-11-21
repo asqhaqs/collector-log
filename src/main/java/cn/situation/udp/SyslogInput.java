@@ -13,7 +13,7 @@ public class SyslogInput extends AbstractUdp {
 
     private static final Logger LOG = LoggerFactory.getLogger(SyslogInput.class);
 
-    public static volatile KafkaBroker broker = KafkaBroker.getInstance();
+    public static KafkaBroker broker = KafkaBroker.getInstance();
 
     private String host;
     private int port = 514;
