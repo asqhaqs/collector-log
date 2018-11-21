@@ -28,8 +28,11 @@ public class SyslogWorker implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 byte[] result = socket.recv(0);
+                LOG.info(String.format("[%s]: result<%s>, thread-id<%s>", "SyslogWorker.run", new String(result),
+                        getId()));
                 action(result);
             } catch (Exception e) {
+                LOG.error("[%s]: message<%s>, thread-id<%s>", "SyslogWorker.run", e.getMessage(), getId());
                 LOG.error(e.getMessage(), e);
                 try {
                     Thread.sleep(5 * 1000);
@@ -42,11 +45,13 @@ public class SyslogWorker implements Runnable {
     }
 
     private void action(byte[] data) throws Exception {
-        MetaData meta = new MetaData();
-        meta.setSource("");
         DataPacket dp = new DataPacket();
-        dp.setHead(meta);
+        dp.setHead(null);
         dp.setBody(data);
         broker.deliver(dp);
+    }
+
+    private long getId() {
+        return Thread.currentThread().getId();
     }
 }

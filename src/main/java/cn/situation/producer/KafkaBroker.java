@@ -33,23 +33,28 @@ public class KafkaBroker {
     }
 
     static {
-        LOG.info("init kafkaProducerProperties");
-        kafkaProducerProperties.put("bootstrap.servers", SystemConstant.BROKER_URL);
-        kafkaProducerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        kafkaProducerProperties.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
-        // kafkaProducerProperties.put("batch.size", 16384);
-        kafkaProducerProperties.put("batch.size", 1);// 16384
-        kafkaProducerProperties.put("linger.ms", 1);
-        kafkaProducerProperties.put("buffer.memory", 33554432);
-        kafkaProducerProperties.put("acks", "0");
-        kafkaProducerProperties.put("compression.type", "snappy");
-        kafkaProducerProperties.put("topic.properties.fetch.enable", "true");
-        if (SystemConstant.IS_KERBEROS.equals("true")) {
-            kafkaProducerProperties.put("security.protocol", "SASL_PLAINTEXT");
-            kafkaProducerProperties.put("sasl.kerberos.service.name", "kafka");
+        try {
+            LOG.info("init kafkaProducerProperties");
+            kafkaProducerProperties.put("bootstrap.servers", SystemConstant.BROKER_URL);
+            kafkaProducerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+            kafkaProducerProperties.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
+            // kafkaProducerProperties.put("batch.size", 16384);
+            kafkaProducerProperties.put("batch.size", 1);// 16384
+            kafkaProducerProperties.put("linger.ms", 1);
+            kafkaProducerProperties.put("buffer.memory", 33554432);
+            kafkaProducerProperties.put("acks", "0");
+            kafkaProducerProperties.put("compression.type", "snappy");
+            kafkaProducerProperties.put("topic.properties.fetch.enable", "true");
+            if (SystemConstant.IS_KERBEROS.equals("true")) {
+                kafkaProducerProperties.put("security.protocol", "SASL_PLAINTEXT");
+                kafkaProducerProperties.put("sasl.kerberos.service.name", "kafka");
+            }
+
+            producer = new KafkaProducer<>(kafkaProducerProperties);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
 
-        producer = new KafkaProducer<>(kafkaProducerProperties);
     }
 
     public void deliver(DataPacket dp) throws Exception {
