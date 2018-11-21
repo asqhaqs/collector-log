@@ -12,7 +12,7 @@ public class SyslogWorker implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(SyslogWorker.class);
 
-    private static volatile KafkaBroker broker = KafkaBroker.getInstance();
+    private static KafkaBroker broker = KafkaBroker.getInstance();
 
     private ZMQ.Context context;
 

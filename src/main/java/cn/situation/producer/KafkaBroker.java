@@ -52,15 +52,17 @@ public class KafkaBroker {
         producer = new KafkaProducer<>(kafkaProducerProperties);
     }
 
-    public void deliver(DataPacket dp) throws IOException {
+    public void deliver(DataPacket dp) throws Exception {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream;
             objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(dp);
-            byte[] bytes = byteArrayOutputStream.toByteArray();
+            byte[] bytes = byteArrayOutputStream.toByteArray();*/
+            // 直接发送原始数据
+            byte[] bytes = dp.getBody();
             producer.send(new ProducerRecord<>(topic, null, bytes));
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error(String.format("[%s]: message<%s>", "deliver", e.getMessage()));
             throw e;
         }
